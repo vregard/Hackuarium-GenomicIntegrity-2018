@@ -149,25 +149,25 @@ if __name__ == '__main__':
     coordinates = peak_local_max(im, min_distance=20)
 
     # display results
-    fig, axes = plt.subplots(1, 3, figsize=(8, 3), sharex=True, sharey=True)
-    ax = axes.ravel()
-    ax[0].imshow(im, cmap=plt.cm.gray)
-    ax[0].axis('off')
-    ax[0].set_title('Original')
+    #fig, axes = plt.subplots(1, 3, figsize=(8, 3), sharex=True, sharey=True)
+    #ax = axes.ravel()
+    #ax[0].imshow(im, cmap=plt.cm.gray)
+    #ax[0].axis('off')
+    #ax[0].set_title('Original')
 
-    ax[1].imshow(image_max, cmap=plt.cm.gray)
-    ax[1].axis('off')
-    ax[1].set_title('Maximum filter')
+    #ax[1].imshow(image_max, cmap=plt.cm.gray)
+    #ax[1].axis('off')
+    #ax[1].set_title('Maximum filter')
 
-    ax[2].imshow(im, cmap=plt.cm.gray)
-    ax[2].autoscale(False)
-    ax[2].plot(coordinates[:, 1], coordinates[:, 0], 'r.')
-    ax[2].axis('off')
-    ax[2].set_title('Peak local max')
+    #ax[2].imshow(im, cmap=plt.cm.gray)
+    #ax[2].autoscale(False)
+    #ax[2].plot(coordinates[:, 1], coordinates[:, 0], 'r.')
+    #ax[2].axis('off')
+    #ax[2].set_title('Peak local max')
 
-    fig.tight_layout()
+    #fig.tight_layout()
 
-    plt.show()
+    #plt.show()
 #
 
 
