@@ -7,7 +7,12 @@
 ## Virtual environment
 ### 1. Open the provided .yml file
 Using anaconda
-  > conda env create -f env.yml
+
+* On Windows
+  > conda env create -f windows_env.yml
+
+* On macOS
+  > conda env create -f macOS_env.yml
 
 Now, check it has been created. The following line lists all available virtual environment available on your computer
   > conda  info --envs
@@ -21,7 +26,7 @@ To install additional packages to a virtual environment
 What is needed:
 * Python 2.7
 * Additional packages
-  * opencv
+  * OpenCV
   * termcolor
 
 ## Manage the virtual environment:
