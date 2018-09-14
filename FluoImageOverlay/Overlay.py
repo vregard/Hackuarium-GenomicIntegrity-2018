@@ -1,30 +1,27 @@
 # GOAL: overlay image + fluo image
 import numpy as np
 import cv2
+import sys
 
 if __name__ == '__main__':
 
     #fluo = cv2.imread('2018-08-15/16-04-02.jpg')
     #img = cv2.imread('2018-08-15/16-04-17.jpg')
-    ##backgrd = cv2.imread('2018-08-15/16-04-48.jpg') # not used yet
 
     #fluo = cv2.imread('2018-08-15/16-28-53.jpg')
     #original = cv2.imread('2018-08-15/16-29-06.jpg')
 
-    fluo = cv2.imread('2018-08-15/17-12-32.jpg')
-    original = cv2.imread('2018-08-15/17-12-10.jpg')
+    #fluo = cv2.imread('2018-08-15/17-12-32.jpg')
+    #original = cv2.imread('2018-08-15/17-12-10.jpg')
+
+    fluo = cv2.imread(sys.argv[1])
+    original = cv2.imread(sys.argv[2])
 
     img = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-    original = cv2.resize(original, (0, 0), fx=0.5, fy=0.5)
     fluo = cv2.resize(fluo, (0, 0), fx=0.5, fy=0.5)
     img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
-    #backgrd = cv2.resize(backgrd, (0, 0), fx=0.5, fy=0.5)
-
-    #cv2.imshow('Original', original)
-    #cv2.imshow('Img', img)
-    cv2.imshow('Fluo - bef', fluo)
 
     #b = 90.  # brightness
     #c = 90.  # contrast

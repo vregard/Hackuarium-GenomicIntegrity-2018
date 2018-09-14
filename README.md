@@ -1,8 +1,21 @@
 # Hackuarium-GenomicIntegrity-2018
 
 * **FluoImageOverlay**: allows to overlay a fluorescent image and a phase contrast image.
-* **tif2jpeg**: allows to convert a tiff format image in a jpg/png format image
-* **GenomicIntegrity-2018**: main project
+	> python Overlay.py fluo1.jpg contrast1.jpg
+
+* **tif2jpg**: allows to convert a tif format image in a jpg format image
+	> python tif2jpg.py a_image.tif
+
+* **NucleusDetection**: main project, the cell detection is done quite well but the nucleus detection is not ok 
+	=> Can be improved, several ways of doing it are present in the code (the Trash folder contains ideas that were not use finally)
+	> python Merge2.py
+
+* **MovingStage**: several files 
+	* tif2jpg-folder: convert all the tif images of the specified folder into jpg format, put them into a new file named file-jpg
+		> python tif2jpg-folder.py PanoramaJennifer
+
+	* stitch: takes all the images of a folder and stitch them in the left-to-right order => Need to improve this by doing a similar algorithm which would stitch images in the top-to-bottom order
+		> python stitch.py PanoramaJennifer-jpg
 
 ## Virtual environment
 ### 1. Open the provided .yml file
@@ -31,16 +44,17 @@ What is needed:
 
 ## Manage the virtual environment:
 
-To activate an environment:
-* On Windows, in your Anaconda Prompt,  
-  > activate myenv
+On macOS and Linux, in your Terminal Window,
+* To activate an environment:
+	> source activate myenv
 
-* On macOS and Linux, in your Terminal Window,  
-  > source activate myenv
+* To deactivate an environment:
+	> source deactivate
 
-To deactivate an environment:
-* On Windows, in your Anaconda Prompt, 
-  > deactivate
 
-* On macOS and Linux, in your Terminal Window, 
-  > source deactivate
+On Windows, in your Anaconda Prompt, 
+* To activate an environment:
+	> activate myenv
+
+* To deactivate an environment:
+	> deactivate

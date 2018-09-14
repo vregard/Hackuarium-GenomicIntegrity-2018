@@ -8,7 +8,7 @@ class Stitcher:
 		# determine if we are using OpenCV v3.X
 		self.isv3 = imutils.is_cv3()
 
-	def stitch(self, images, ratio=0.75, reprojThresh=4.0,
+	def stitch_horizontal(self, images, ratio=0.75, reprojThresh=4.0,
 		showMatches=False):
 		# unpack the images, then detect keypoints and extract
 		# local invariant descriptors from them
@@ -28,21 +28,83 @@ class Stitcher:
 		# otherwise, apply a perspective warp to stitch the images
 		# together
 		(matches, H, status) = M
+		#print H[1][2] # corresponds to the translation to the bottom
+		#print H[0][2] # corresponds to the translation to the right
 		H[1][2] = 0 # not that elegant but no translation to the bottom
 
-		result = cv2.warpPerspective(imageA, H, (imageA.shape[1] + imageB.shape[1], imageA.shape[0]))
+		result = cv2.warpPerspective(imageA, H, (imageB.shape[1] + int(H[0][2]), imageB.shape[0] + int(H[1][2])))
+		#result = cv2.warpPerspective(imageA, H, (imageA.shape[1] + imageB.shape[1], imageA.shape[0]))
 		#print H
 
 		#cv2.imshow("Tmp", result)
 
-		#cv2.imshow("A", imageA)
-		#cv2.imshow("B", imageB)
 		# attention A and B are reversed
+		#cv2.imshow("A", imageA) # A is the bew part
+		#cv2.imshow("B", imageB) # B is the previous result
+
+		#print imageA.shape
+		#print imageB.shape
 
 		#result[0:imageB.shape[0], 0:imageB.shape[1]] = imageB
 		result[0:imageA.shape[0]-1, 0:imageA.shape[1]-1] = imageB[0:imageA.shape[0]-1, 0:imageA.shape[1]-1]
-		# H.item(0,2) corrsponds to the translation to the right
-		result = result[0:imageA.shape[0], 0:imageA.shape[1]+int(H.item(0,2))]
+		#result[0:int(H[0][2]) - 1, 0:int(H[1][2])] = imageB[0:int(H[0][2]) - 1, 0:int(H[1][2])]
+		# H.item(0,2) corresponds to the translation to the right
+		result = result[0:imageA.shape[0]+int(H[1][2]), 0:imageA.shape[1]+int(H[0][2])]
+
+		# check to see if the keypoint matches should be visualized
+		if showMatches:
+			vis = self.drawMatches(imageA, imageB, kpsA, kpsB, matches,
+				status)
+
+			# return a tuple of the stitched image and the
+			# visualization
+			return (result, vis)
+
+		# return the stitched image
+		return result
+
+	def stitch_horizontal(self, images, ratio=0.75, reprojThresh=4.0,
+		showMatches=False):
+		# unpack the images, then detect keypoints and extract
+		# local invariant descriptors from them
+		(imageB, imageA) = images
+		(kpsA, featuresA) = self.detectAndDescribe(imageA)
+		(kpsB, featuresB) = self.detectAndDescribe(imageB)
+
+		# match features between the two images
+		M = self.matchKeypoints(kpsA, kpsB,
+			featuresA, featuresB, ratio, reprojThresh)
+
+		# if the match is None, then there aren't enough matched
+		# keypoints to create a panorama
+		if M is None:
+			return None
+
+		# otherwise, apply a perspective warp to stitch the images
+		# together
+		(matches, H, status) = M
+		#print H[1][2] # corresponds to the translation to the bottom
+		#print H[0][2] # corresponds to the translation to the right
+		#H[1][2] = 0 # not that elegant but no translation to the bottom
+
+		result = cv2.warpPerspective(imageA, H, (imageB.shape[1] + int(H[0][2]), imageB.shape[0] + int(H[1][2])))
+		#result = cv2.warpPerspective(imageA, H, (imageA.shape[1] + imageB.shape[1], imageA.shape[0]))
+		#print H
+
+		#cv2.imshow("Tmp", result)
+
+		# attention A and B are reversed
+		#cv2.imshow("A", imageA) # A is the bew part
+		#cv2.imshow("B", imageB) # B is the previous result
+
+		#print imageA.shape
+		#print imageB.shape
+
+		#result[0:imageB.shape[0], 0:imageB.shape[1]] = imageB
+		result[0:imageA.shape[0]-1, 0:imageA.shape[1]-1] = imageB[0:imageA.shape[0]-1, 0:imageA.shape[1]-1]
+		#result[0:int(H[0][2]) - 1, 0:int(H[1][2])] = imageB[0:int(H[0][2]) - 1, 0:int(H[1][2])]
+		# H.item(0,2) corresponds to the translation to the right
+		result = result[0:imageA.shape[0]+int(H[1][2]), 0:imageA.shape[1]+int(H[0][2])]
 
 		# check to see if the keypoint matches should be visualized
 		if showMatches:
